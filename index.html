@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="أعياد الميلاد">
+  <meta name="theme-color" content="#1b1f3b">
+  <link rel="apple-touch-icon" href="IMG_2415.png">
+  <title>أعياد ميلاد الصغار</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800;900&family=Almarai:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #1b1f3b;
+      --bg-2: #20244a;
+      --surface: #262b52;
+      --surface-2: #2e3462;
+      --gold: #e8a93b;
+      --gold-soft: #f2c876;
+      --coral: #ef6f6c;
+      --cream: #f4efe6;
+      --muted: #9498c0;
+      --ring-track: #33386a;
+      --success: #4ade80;
+      --danger: #f87171;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    [data-theme="light"] {
+      --bg: #f5f0e8;
+      --bg-2: #fffdf9;
+      --surface: #ffffff;
+      --surface-2: #f8f4ec;
+      --gold: #d4920f;
+      --gold-soft: #b87a00;
+      --coral: #e05a57;
+      --cream: #1b1f3b;
+      --muted: #6b6f8c;
+      --ring-track: #e5dfd4;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --shadow: rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(circle at 15% 0%, color-mix(in srgb, var(--bg-2) 80%, transparent) 0%, var(--bg) 55%) fixed;
+      color: var(--cream);
+      font-family: 'Almarai', sans-serif;
+      min-height: 100vh;
+      padding: 28px 18px 80px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .wrap { max-width: 880px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 24px; position: relative; }
+    header h1 {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 900;
+      font-size: clamp(26px, 5vw, 40px);
+      margin: 0 0 6px;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, var(--gold-soft), var(--coral));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    header p { color: var(--muted); margin: 0; font-size: 14.5px; }
+
+    .top-actions {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      gap: 8px;
+    }
+    .icon-btn {
+      width: 42px; height: 42px;
+      border: none; border-radius: 50%;
+      background: var(--surface);
+      color: var(--gold-soft);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .15s, background .15s;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+    .icon-btn:hover { transform: translateY(-2px); background: var(--surface-2); }
+    .icon-btn.active { background: linear-gradient(90deg, var(--gold), var(--coral)); color: #1b1f3b; }
+
+    .btn-row {
+      display: flex; gap: 10px; max-width: 360px; margin: 20px auto 0;
+    }
+    .add-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      flex: 1;
+      padding: 14px 20px; border: none; border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold), var(--coral));
+      color: #1b1f3b; font-family: 'Tajawal', sans-serif; font-weight: 800; font-size: 16px;
+      cursor: pointer; box-shadow: 0 8px 24px rgba(232,169,59,0.25);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .add-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(232,169,59,0.35); }
+    .add-btn:active { transform: translateY(0); }
+    .bell-btn {
+      flex-shrink: 0; width: 52px; border: none; border-radius: 999px;
+      background: var(--surface); color: var(--gold-soft); font-size: 19px; cursor: pointer;
+      transition: transform .15s, background .15s;
+    }
+    .bell-btn:hover { transform: translateY(-2px); background: var(--surface-2); }
+    .bell-btn.active { background: linear-gradient(90deg, var(--gold), var(--coral)); color: #1b1f3b; }
+    .notif-status {
+      text-align: center; font-size: 12px; color: var(--muted); max-width: 360px; margin: 8px auto 0;
+    }
+
+    .hero {
+      margin-top: 28px;
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
+      border-radius: 28px;
+      padding: 26px;
+      display: flex; align-items: center; gap: 22px;
+      position: relative; overflow: hidden;
+      border: 1px solid color-mix(in srgb, var(--gold-soft) 18%, transparent);
+      cursor: pointer;
+      transition: transform .15s;
+    }
+    .hero:hover { transform: translateY(-2px); }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--coral) 18%, transparent), transparent 55%);
+      pointer-events: none;
+    }
+    .hero.today {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 30%, transparent), 0 12px 40px rgba(232,169,59,0.2);
+    }
+    .hero-avatar { position: relative; flex-shrink: 0; width: 112px; height: 112px; }
+    .hero-eyebrow {
+      font-family: 'Tajawal', sans-serif; font-weight: 800; font-size: 13px;
+      color: var(--gold-soft); letter-spacing: 1px; margin: 0 0 6px;
+    }
+    .hero-name { font-family: 'Tajawal', sans-serif; font-weight: 900; font-size: clamp(22px,4vw,30px); margin: 0 0 4px; }
+    .hero-sub { color: var(--muted); font-size: 14px; margin: 0; }
+    .hero-days { font-family: 'Tajawal', sans-serif; font-weight: 900; font-size: 15px; color: var(--cream); margin-top: 4px; }
+
+    .empty {
+      text-align: center; padding: 60px 20px; color: var(--muted);
+      background: var(--surface); border-radius: 24px; margin-top: 26px;
+    }
+    .empty .big { font-size: 48px; margin-bottom: 12px; }
+
+    .section-label {
+      font-family: 'Tajawal', sans-serif; font-weight: 800; font-size: 14px;
+      color: var(--muted); margin: 28px 4px 12px; letter-spacing: 0.5px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 16px 12px 14px;
+      text-align: center;
+      position: relative;
+      border: 1px solid color-mix(in srgb, var(--cream) 4%, transparent);
+      transition: transform .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px var(--shadow); }
+    .card.today { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+    .card .name { font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 15px; margin: 10px 0 2px; }
+    .card .meta { color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+    .card .del {
+      position: absolute; top: 8px; left: 8px; width: 26px; height: 26px; border-radius: 50%;
+      background: color-mix(in srgb, var(--bg) 40%, transparent); border: none; color: var(--muted); cursor: pointer;
+      font-size: 14px; line-height: 26px; padding: 0; z-index: 2;
+      transition: background .15s, color .15s;
+    }
+    .card .del:hover { background: var(--coral); color: #fff; }
+
+    .ring { position: relative; display: inline-block; }
+    .ring svg { transform: rotate(-90deg); }
+    .ring-track { stroke: var(--ring-track); fill: none; }
+    .ring-fill { stroke: url(#ringGrad); fill: none; stroke-linecap: round; transition: stroke-dashoffset .6s ease; }
+    .ring-photo { position: absolute; border-radius: 50%; object-fit: cover; }
+    .ring-initial {
+      position: absolute; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      background: var(--surface-2); font-family: 'Tajawal', sans-serif; font-weight: 800; color: var(--gold-soft);
+    }
+    .ring-days {
+      position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+      background: var(--gold); color: #1b1f3b; font-family: 'Tajawal', sans-serif; font-weight: 800;
+      font-size: 11px; padding: 2px 8px; border-radius: 999px; white-space: nowrap;
+    }
+
+    .overlay {
+      position: fixed; inset: 0; background: rgba(10,12,26,0.72); backdrop-filter: blur(4px);
+      display: flex; align-items: flex-end; justify-content: center; z-index: 50;
+      opacity: 0; pointer-events: none; transition: opacity .22s ease;
+    }
+    .overlay.open { opacity: 1; pointer-events: auto; }
+    .sheet {
+      background: var(--bg-2); width: 100%; max-width: 440px; border-radius: 26px 26px 0 0;
+      padding: 24px 22px 32px; transform: translateY(40px); transition: transform .28s ease;
+      border-top: 1px solid color-mix(in srgb, var(--gold-soft) 22%, transparent);
+      max-height: 92vh; overflow-y: auto;
+    }
+    .overlay.open .sheet { transform: translateY(0); }
+    .sheet h2 { font-family: 'Tajawal', sans-serif; font-weight: 800; font-size: 20px; margin: 0 0 18px; }
+    label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
+    input[type=text], input[type=date], input[type=number] {
+      width: 100%; padding: 12px 14px; border-radius: 12px;
+      border: 1px solid color-mix(in srgb, var(--cream) 10%, transparent);
+      background: var(--surface); color: var(--cream); font-family: 'Almarai', sans-serif; font-size: 15px;
+    }
+    input:focus { outline: 2px solid var(--gold); border-color: transparent; }
+    .photo-row { display: flex; align-items: center; gap: 14px; margin-top: 14px; }
+    .photo-preview {
+      width: 64px; height: 64px; border-radius: 50%; background: var(--surface); flex-shrink: 0;
+      object-fit: cover; border: 1px dashed color-mix(in srgb, var(--cream) 18%, transparent);
+    }
+    .photo-btn {
+      padding: 9px 14px; border-radius: 10px;
+      border: 1px solid color-mix(in srgb, var(--cream) 12%, transparent);
+      background: var(--surface); color: var(--cream); font-size: 13px; cursor: pointer;
+    }
+    .sheet-actions { display: flex; gap: 10px; margin-top: 22px; }
+    .btn-cancel {
+      flex: 1; padding: 13px; border-radius: 12px; border: none; background: var(--surface);
+      color: var(--muted); font-family: 'Tajawal', sans-serif; font-weight: 700; cursor: pointer;
+    }
+    .btn-save {
+      flex: 2; padding: 13px; border-radius: 12px; border: none;
+      background: linear-gradient(90deg, var(--gold), var(--coral)); color: #1b1f3b;
+      font-family: 'Tajawal', sans-serif; font-weight: 800; cursor: pointer;
+    }
+    .btn-save:disabled { opacity: 0.5; }
+    .btn-danger {
+      flex: 1; padding: 13px; border-radius: 12px; border: none;
+      background: color-mix(in srgb, var(--danger) 18%, var(--surface)); color: var(--danger);
+      font-family: 'Tajawal', sans-serif; font-weight: 700; cursor: pointer;
+    }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 16px; text-align: center; line-height: 1.7; }
+
+    .days-chips {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;
+    }
+    .chip {
+      padding: 8px 14px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--cream) 12%, transparent);
+      background: var(--surface); color: var(--muted); font-size: 13px; cursor: pointer;
+      font-family: 'Tajawal', sans-serif; font-weight: 700; transition: all .15s;
+    }
+    .chip.active {
+      background: linear-gradient(90deg, var(--gold), var(--coral));
+      color: #1b1f3b; border-color: transparent;
+    }
+
+    .toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--surface-2); color: var(--cream);
+      padding: 12px 22px; border-radius: 999px; font-size: 14px; font-weight: 700;
+      box-shadow: 0 8px 28px var(--shadow); z-index: 100;
+      opacity: 0; transition: transform .3s, opacity .3s;
+      border: 1px solid color-mix(in srgb, var(--gold-soft) 20%, transparent);
+      white-space: nowrap; max-width: 90vw;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    .celeb-overlay {
+      position: fixed; inset: 0; background: rgba(10,12,26,0.85); backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center; z-index: 60;
+      opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .celeb-overlay.open { opacity: 1; pointer-events: auto; }
+    .celeb-card {
+      background: linear-gradient(160deg, var(--surface-2), var(--surface));
+      border-radius: 28px; padding: 36px 28px; text-align: center;
+      max-width: 340px; width: 90%; position: relative;
+      border: 2px solid var(--gold);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      transform: scale(0.85); transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .celeb-overlay.open .celeb-card { transform: scale(1); }
+    .celeb-card .cake { font-size: 64px; margin-bottom: 8px; animation: bounce 1.2s ease infinite; }
+    .celeb-card h2 { font-family: 'Tajawal', sans-serif; font-weight: 900; font-size: 26px; margin: 0 0 6px; }
+    .celeb-card p { color: var(--muted); margin: 0 0 20px; font-size: 15px; }
+    .celeb-card .celeb-photo {
+      width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
+      margin: 0 auto 14px; border: 3px solid var(--gold); display: block;
+    }
+    .celeb-card .celeb-initial {
+      width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 14px;
+      background: var(--surface-2); display: flex; align-items: center; justify-content: center;
+      font-family: 'Tajawal', sans-serif; font-weight: 900; font-size: 36px; color: var(--gold-soft);
+      border: 3px solid var(--gold);
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    #confettiCanvas {
+      position: fixed; inset: 0; pointer-events: none; z-index: 70;
+    }
+
+    .backup-row {
+      display: flex; gap: 10px; margin-top: 18px;
+    }
+    .backup-btn {
+      flex: 1; padding: 11px; border-radius: 12px;
+      border: 1px solid color-mix(in srgb, var(--cream) 12%, transparent);
+      background: var(--surface); color: var(--cream); font-size: 13px;
+      font-family: 'Tajawal', sans-serif; font-weight: 700; cursor: pointer;
+      transition: background .15s;
+    }
+    .backup-btn:hover { background: var(--surface-2); }
+
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<svg width="0" height="0"><defs>
+  <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#f2c876"/>
+    <stop offset="100%" stop-color="#ef6f6c"/>
+  </linearGradient>
+</defs></svg>
+
+<canvas id="confettiCanvas"></canvas>
+
+<div class="wrap">
+  <header>
+    <div class="top-actions">
+      <button class="icon-btn" id="themeBtn" aria-label="تبديل الوضع" title="وضع فاتح/داكن">🌓</button>
+      <button class="icon-btn" id="backupBtn" aria-label="نسخة احتياطية" title="تصدير / استيراد">💾</button>
+    </div>
+    <h1>أعياد ميلاد الصغار</h1>
+    <p>لا تفوّت عيد ميلاد أحد بعد اليوم</p>
+  </header>
+
+  <div class="btn-row">
+    <button class="add-btn" id="openAdd">+ إضافة طفل</button>
+    <button class="bell-btn" id="openNotif" aria-label="إعدادات الإشعارات">🔔</button>
+  </div>
+  <p class="notif-status" id="notifStatus"></p>
+
+  <div id="content"></div>
+</div>
+
+<!-- Add / Edit Sheet -->
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <h2 id="sheetTitle">إضافة طفل جديد</h2>
+    <label for="fName">الاسم</label>
+    <input type="text" id="fName" placeholder="اسم الطفل" autocomplete="off">
+    <label for="fDate">تاريخ الميلاد</label>
+    <input type="date" id="fDate">
+    <div class="photo-row">
+      <img class="photo-preview" id="photoPreview" alt="">
+      <button class="photo-btn" id="photoBtn" type="button">اختيار صورة</button>
+      <button class="photo-btn" id="photoClear" type="button" style="display:none">إزالة</button>
+      <input type="file" id="photoInput" accept="image/*" style="display:none">
+    </div>
+    <div class="sheet-actions">
+      <button class="btn-cancel" id="cancelBtn">إلغاء</button>
+      <button class="btn-save" id="saveBtn">حفظ</button>
+    </div>
+    <div class="sheet-actions" id="editExtra" style="display:none; margin-top:10px">
+      <button class="btn-danger" id="deleteBtn">حذف الطفل</button>
+    </div>
+    <p class="hint">تُحفظ البيانات على هذا الجهاز فقط ولا يراها أحد سواك.</p>
+  </div>
+</div>
+
+<!-- Notifications Sheet -->
+<div class="overlay" id="notifOverlay">
+  <div class="sheet">
+    <h2>الإشعارات</h2>
+    <p class="hint" style="margin-top:0; text-align:right; line-height:1.8">
+      تعمل الإشعارات أثناء فتح الصفحة. لأفضل نتيجة أضف الصفحة إلى الشاشة الرئيسية وافتحها بين الحين والآخر.
+    </p>
+    <label>نبّهني قبل العيد بـ:</label>
+    <div class="days-chips" id="daysChips">
+      <button class="chip" data-days="0">يوم العيد</button>
+      <button class="chip" data-days="1">يوم واحد</button>
+      <button class="chip" data-days="3">3 أيام</button>
+      <button class="chip" data-days="7">أسبوع</button>
+      <button class="chip" data-days="14">أسبوعين</button>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn-cancel" id="notifCancelBtn">إغلاق</button>
+      <button class="btn-save" id="notifSaveBtn">تفعيل الإشعارات</button>
+    </div>
+  </div>
+</div>
+
+<!-- Backup Sheet -->
+<div class="overlay" id="backupOverlay">
+  <div class="sheet">
+    <h2>نسخة احتياطية</h2>
+    <p class="hint" style="margin-top:0; text-align:right">احفظ بياناتك أو استعدها على جهاز آخر.</p>
+    <div class="backup-row">
+      <button class="backup-btn" id="exportBtn">⬇️ تصدير</button>
+      <button class="backup-btn" id="importBtn">⬆️ استيراد</button>
+    </div>
+    <input type="file" id="importInput" accept=".json,application/json" style="display:none">
+    <div class="sheet-actions" style="margin-top:20px">
+      <button class="btn-cancel" id="backupCloseBtn">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- Celebration -->
+<div class="celeb-overlay" id="celebOverlay">
+  <div class="celeb-card" id="celebCard">
+    <div class="cake">🎂</div>
+    <div id="celebPhotoWrap"></div>
+    <h2 id="celebName"></h2>
+    <p id="celebAge"></p>
+    <button class="btn-save" id="celebClose" style="width:100%; margin-top:8px">رائع! 🎉</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'kids-birthdays-list';
+const SETTINGS_KEY = 'kids-birthdays-settings';
+let kids = [];
+let editingId = null;
+let pendingPhoto = null;
+let settings = {
+  notifyDays: [0, 3],
+  enabled: false,
+  lastNotified: {},
+  theme: 'dark',
+  celebratedToday: {}
+};
+
+const content = document.getElementById('content');
+const overlay = document.getElementById('overlay');
+const fName = document.getElementById('fName');
+const fDate = document.getElementById('fDate');
+const photoPreview = document.getElementById('photoPreview');
+const photoClear = document.getElementById('photoClear');
+const notifOverlay = document.getElementById('notifOverlay');
+const notifStatus = document.getElementById('notifStatus');
+const bellBtn = document.getElementById('openNotif');
+const photoInput = document.getElementById('photoInput');
+const saveBtn = document.getElementById('saveBtn');
+const sheetTitle = document.getElementById('sheetTitle');
+const editExtra = document.getElementById('editExtra');
+const toastEl = document.getElementById('toast');
+const themeBtn = document.getElementById('themeBtn');
+const backupOverlay = document.getElementById('backupOverlay');
+const celebOverlay = document.getElementById('celebOverlay');
+
+function uid() {
+  return 'k' + Date.now() + Math.random().toString(36).slice(2, 7);
+}
+
+const hasAppStorage = typeof window.storage !== 'undefined' && window.storage;
+async function storageGet(key) {
+  if (hasAppStorage) {
+    try { return await window.storage.get(key, false); } catch (e) { return null; }
+  }
+  try {
+    const v = localStorage.getItem(key);
+    return v !== null ? { key, value: v, shared: false } : null;
+  } catch (e) { return null; }
+}
+async function storageSet(key, value) {
+  if (hasAppStorage) {
+    try { return await window.storage.set(key, value, false); } catch (e) { return null; }
+  }
+  try { localStorage.setItem(key, value); return { key, value, shared: false }; }
+  catch (e) { return null; }
+}
+
+function toast(msg, duration = 2400) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastEl._t);
+  toastEl._t = setTimeout(() => toastEl.classList.remove('show'), duration);
+}
+
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', settings.theme === 'light' ? 'light' : 'dark');
+  themeBtn.textContent = settings.theme === 'light' ? '🌙' : '☀️';
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = settings.theme === 'light' ? '#f5f0e8' : '#1b1f3b';
+}
+
+async function load() {
+  try {
+    const res = await storageGet(STORAGE_KEY);
+    kids = res && res.value ? JSON.parse(res.value) : [];
+  } catch (e) { kids = []; }
+  try {
+    const res = await storageGet(SETTINGS_KEY);
+    if (res && res.value) {
+      const parsed = JSON.parse(res.value);
+      settings = { ...settings, ...parsed };
+      if (parsed.notifyDaysBefore !== undefined && !parsed.notifyDays) {
+        settings.notifyDays = [0, Number(parsed.notifyDaysBefore) || 3];
+      }
+    }
+  } catch (e) {}
+
+  applyTheme();
+  render();
+  updateNotifUI();
+  updateChips();
+  checkAndNotify();
+  checkCelebrations();
+}
+
+async function persist() {
+  try { await storageSet(STORAGE_KEY, JSON.stringify(kids)); }
+  catch (e) { console.error('تعذر الحفظ', e); toast('تعذر حفظ البيانات'); }
+}
+async function persistSettings() {
+  try { await storageSet(SETTINGS_KEY, JSON.stringify(settings)); }
+  catch (e) { console.error(e); }
+}
+
+function updateNotifUI() {
+  const supported = 'Notification' in window;
+  const granted = supported && Notification.permission === 'granted';
+  const on = settings.enabled && granted;
+  bellBtn.classList.toggle('active', on);
+  if (!supported) {
+    notifStatus.textContent = 'المتصفح لا يدعم الإشعارات هنا';
+  } else if (on) {
+    const daysStr = (settings.notifyDays || []).map(d => d === 0 ? 'يوم العيد' : d + ' يوم').join('، ');
+    notifStatus.textContent = `الإشعارات مفعّلة — ${daysStr}`;
+  } else {
+    notifStatus.textContent = 'الإشعارات غير مفعّلة';
+  }
+}
+
+function updateChips() {
+  document.querySelectorAll('#daysChips .chip').forEach(chip => {
+    const d = Number(chip.dataset.days);
+    chip.classList.toggle('active', (settings.notifyDays || []).includes(d));
+  });
+}
+
+function checkAndNotify() {
+  if (!('Notification' in window)) return;
+  if (!settings.enabled || Notification.permission !== 'granted') return;
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const daysSet = new Set(settings.notifyDays || [0, 3]);
+
+  kids.forEach(k => {
+    const { diffDays, turningAge } = daysAndAgeInfo(k.birthdate);
+    if (daysSet.has(diffDays)) {
+      const key = todayKey + ':' + diffDays;
+      if (settings.lastNotified[k.id] !== key) {
+        const body = diffDays === 0
+          ? `عيد ميلاد ${k.name} اليوم! سيتم ${turningAge} سنة 🎉`
+          : `عيد ميلاد ${k.name} بعد ${diffDays} يوم — سيتم ${turningAge} سنة`;
+        try {
+          new Notification('أعياد ميلاد الصغار', { body, tag: k.id + '-' + diffDays, icon: k.photo || 'IMG_2415.png' });
+        } catch (e) {}
+        settings.lastNotified[k.id] = key;
+      }
+    }
+  });
+  persistSettings();
+}
+
+function checkCelebrations() {
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const todayKids = kids.filter(k => {
+    const { isToday } = daysAndAgeInfo(k.birthdate);
+    return isToday && settings.celebratedToday[k.id] !== todayKey;
+  });
+  if (todayKids.length) {
+    showCelebration(todayKids[0]);
+    todayKids.forEach(k => { settings.celebratedToday[k.id] = todayKey; });
+    persistSettings();
+  }
+}
+
+function showCelebration(kid) {
+  const { turningAge } = daysAndAgeInfo(kid.birthdate);
+  document.getElementById('celebName').textContent = `كل عام و${kid.name} بخير!`;
+  document.getElementById('celebAge').textContent = `أصبح عمره ${turningAge} سنة 🎈`;
+  const wrap = document.getElementById('celebPhotoWrap');
+  if (kid.photo) {
+    wrap.innerHTML = `<img class="celeb-photo" src="${kid.photo}" alt="">`;
+  } else {
+    wrap.innerHTML = `<div class="celeb-initial">${(kid.name || '?')[0]}</div>`;
+  }
+  celebOverlay.classList.add('open');
+  launchConfetti();
+}
+
+function daysAndAgeInfo(birthdateStr) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const bd = new Date(birthdateStr + 'T00:00:00');
+  let next = new Date(today.getFullYear(), bd.getMonth(), bd.getDate());
+  if (next < today) next = new Date(today.getFullYear() + 1, bd.getMonth(), bd.getDate());
+  const diffDays = Math.round((next - today) / 86400000);
+  const turningAge = next.getFullYear() - bd.getFullYear();
+
+  let ageYears = today.getFullYear() - bd.getFullYear();
+  let ageMonths = today.getMonth() - bd.getMonth();
+  if (today.getDate() < bd.getDate()) ageMonths--;
+  if (ageMonths < 0) { ageYears--; ageMonths += 12; }
+
+  return { diffDays, turningAge, isToday: diffDays === 0, ageYears, ageMonths };
+}
+
+function formatBirthdate(birthdateStr) {
+  const bd = new Date(birthdateStr + 'T00:00:00');
+  return bd.toLocaleDateString('ar', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function formatAge(info) {
+  if (info.ageYears < 1) return `${info.ageMonths} شهر`;
+  if (info.ageYears < 3 && info.ageMonths > 0) return `${info.ageYears} سنة و ${info.ageMonths} شهر`;
+  return `${info.ageYears} سنة`;
+}
+
+function ringSVG(size, strokeW, progress, photo, initial) {
+  const r = (size - strokeW) / 2;
+  const c = 2 * Math.PI * r;
+  const offset = c * (1 - Math.min(1, Math.max(0, progress)));
+  const inner = size - strokeW * 2 - 6;
+  return `
+    <div class="ring" style="width:${size}px;height:${size}px">
+      <svg width="${size}" height="${size}">
+        <circle class="ring-track" cx="${size/2}" cy="${size/2}" r="${r}" stroke-width="${strokeW}"></circle>
+        <circle class="ring-fill" cx="${size/2}" cy="${size/2}" r="${r}" stroke-width="${strokeW}"
+          stroke-dasharray="${c}" stroke-dashoffset="${offset}"></circle>
+      </svg>
+      ${photo
+        ? `<img class="ring-photo" src="${photo}" style="width:${inner}px;height:${inner}px;top:${(size-inner)/2}px;left:${(size-inner)/2}px">`
+        : `<div class="ring-initial" style="width:${inner}px;height:${inner}px;top:${(size-inner)/2}px;left:${(size-inner)/2}px;font-size:${inner*0.4}px">${initial}</div>`
+      }
+    </div>`;
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function render() {
+  if (kids.length === 0) {
+    content.innerHTML = `<div class="empty"><div class="big">🎈</div>أضف أول طفل ليبدأ التقويم<br><small style="opacity:.7">اضغط «+ إضافة طفل» أعلاه</small></div>`;
+    return;
+  }
+
+  const enriched = kids.map(k => ({ ...k, ...daysAndAgeInfo(k.birthdate) }))
+    .sort((a, b) => a.diffDays - b.diffDays);
+
+  const hero = enriched[0];
+  const rest = enriched.slice(1);
+  const heroProgress = 1 - (hero.diffDays / 365);
+
+  let html = `
+    <div class="hero${hero.isToday ? ' today' : ''}" data-id="${hero.id}">
+      <div class="hero-avatar">
+        ${ringSVG(112, 7, heroProgress, hero.photo, (hero.name || '?')[0])}
+      </div>
+      <div>
+        <p class="hero-eyebrow">${hero.isToday ? '🎉 عيد ميلاده اليوم!' : 'الأقرب موعداً'}</p>
+        <p class="hero-name">${escapeHtml(hero.name)}</p>
+        <p class="hero-sub">سيصبح ${hero.turningAge} سنة · ${formatBirthdate(hero.birthdate)}</p>
+        <p class="hero-days">${hero.isToday ? 'كل عام وهو بخير 🎂' : 'بعد ' + hero.diffDays + ' يوم'}</p>
+      </div>
+    </div>
+  `;
+
+  if (rest.length) {
+    html += `<div class="section-label">البقية <span style="font-weight:500;font-size:12px">${rest.length}</span></div><div class="grid">`;
+    rest.forEach(k => {
+      const progress = 1 - (k.diffDays / 365);
+      html += `
+        <div class="card${k.isToday ? ' today' : ''}" data-id="${k.id}">
+          <button class="del" data-del="${k.id}" aria-label="حذف">✕</button>
+          ${ringSVG(78, 5, progress, k.photo, (k.name || '?')[0])}
+          <div class="ring-days">${k.isToday ? 'اليوم!' : k.diffDays + ' يوم'}</div>
+          <div class="name">${escapeHtml(k.name)}</div>
+          <div class="meta">سيصبح ${k.turningAge} سنة</div>
+          <div class="meta">${formatBirthdate(k.birthdate)}</div>
+        </div>`;
+    });
+    html += `</div>`;
+  }
+
+  content.innerHTML = html;
+
+  content.querySelectorAll('[data-id]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      if (e.target.closest('[data-del]')) return;
+      openEdit(el.getAttribute('data-id'));
+    });
+  });
+
+  content.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute('data-del');
+      confirmDelete(id);
+    });
+  });
+}
+
+function openSheet() {
+  editingId = null;
+  fName.value = '';
+  fDate.value = '';
+  pendingPhoto = null;
+  photoPreview.src = '';
+  photoPreview.style.display = 'none';
+  photoClear.style.display = 'none';
+  sheetTitle.textContent = 'إضافة طفل جديد';
+  editExtra.style.display = 'none';
+  saveBtn.textContent = 'حفظ';
+  overlay.classList.add('open');
+  setTimeout(() => fName.focus(), 280);
+}
+
+function openEdit(id) {
+  const kid = kids.find(k => k.id === id);
+  if (!kid) return;
+  editingId = id;
+  fName.value = kid.name;
+  fDate.value = kid.birthdate;
+  pendingPhoto = kid.photo || null;
+  if (pendingPhoto) {
+    photoPreview.src = pendingPhoto;
+    photoPreview.style.display = 'block';
+    photoClear.style.display = 'inline-block';
+  } else {
+    photoPreview.src = '';
+    photoPreview.style.display = 'none';
+    photoClear.style.display = 'none';
+  }
+  sheetTitle.textContent = 'تعديل بيانات الطفل';
+  editExtra.style.display = 'flex';
+  saveBtn.textContent = 'حفظ التعديلات';
+  overlay.classList.add('open');
+}
+
+function closeSheet() {
+  overlay.classList.remove('open');
+}
+
+function confirmDelete(id) {
+  const kid = kids.find(k => k.id === id);
+  if (!kid) return;
+  if (confirm(`هل تريد حذف «${kid.name}» نهائياً؟`)) {
+    kids = kids.filter(k => k.id !== id);
+    persist().then(() => {
+      render();
+      toast(`تم حذف ${kid.name}`);
+    });
+  }
+}
+
+document.getElementById('openAdd').addEventListener('click', openSheet);
+document.getElementById('cancelBtn').addEventListener('click', closeSheet);
+overlay.addEventListener('click', (e) => { if (e.target === overlay) closeSheet(); });
+
+document.getElementById('deleteBtn').addEventListener('click', () => {
+  if (editingId) {
+    closeSheet();
+    confirmDelete(editingId);
+  }
+});
+
+bellBtn.addEventListener('click', () => {
+  updateChips();
+  notifOverlay.classList.add('open');
+});
+document.getElementById('notifCancelBtn').addEventListener('click', () => notifOverlay.classList.remove('open'));
+notifOverlay.addEventListener('click', (e) => { if (e.target === notifOverlay) notifOverlay.classList.remove('open'); });
+
+document.querySelectorAll('#daysChips .chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const d = Number(chip.dataset.days);
+    let days = [...(settings.notifyDays || [])];
+    if (days.includes(d)) days = days.filter(x => x !== d);
+    else days.push(d);
+    days.sort((a, b) => a - b);
+    settings.notifyDays = days;
+    updateChips();
+  });
+});
+
+document.getElementById('notifSaveBtn').addEventListener('click', async () => {
+  if (!('Notification' in window)) {
+    toast('المتصفح لا يدعم الإشعارات');
+    notifOverlay.classList.remove('open');
+    return;
+  }
+  if (Notification.permission === 'denied') {
+    toast('الإشعارات محظورة من إعدادات المتصفح');
+    notifOverlay.classList.remove('open');
+    return;
+  }
+  let perm = Notification.permission;
+  if (perm !== 'granted') perm = await Notification.requestPermission();
+  settings.enabled = perm === 'granted';
+  await persistSettings();
+  updateNotifUI();
+  notifOverlay.classList.remove('open');
+  if (settings.enabled) {
+    checkAndNotify();
+    toast('تم تفعيل الإشعارات ✓');
+  } else {
+    toast('لم يتم منح إذن الإشعارات');
+  }
+});
+
+themeBtn.addEventListener('click', async () => {
+  settings.theme = settings.theme === 'light' ? 'dark' : 'light';
+  applyTheme();
+  await persistSettings();
+  toast(settings.theme === 'light' ? 'الوضع الفاتح' : 'الوضع الداكن');
+});
+
+document.getElementById('backupBtn').addEventListener('click', () => backupOverlay.classList.add('open'));
+document.getElementById('backupCloseBtn').addEventListener('click', () => backupOverlay.classList.remove('open'));
+backupOverlay.addEventListener('click', (e) => { if (e.target === backupOverlay) backupOverlay.classList.remove('open'); });
+
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const data = { version: 2, exportedAt: new Date().toISOString(), kids, settings: { notifyDays: settings.notifyDays, theme: settings.theme } };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `اعياد-ميلاد-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('تم تصدير البيانات ✓');
+  backupOverlay.classList.remove('open');
+});
+
+document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importInput').click());
+document.getElementById('importInput').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if (!data.kids || !Array.isArray(data.kids)) throw new Error('ملف غير صالح');
+    if (!confirm(`سيتم استبدال القائمة الحالية بـ ${data.kids.length} طفل. هل تريد المتابعة؟`)) return;
+    kids = data.kids.map(k => ({
+      id: k.id || uid(),
+      name: k.name || 'بدون اسم',
+      birthdate: k.birthdate,
+      photo: k.photo || null
+    }));
+    if (data.settings) {
+      if (data.settings.notifyDays) settings.notifyDays = data.settings.notifyDays;
+      if (data.settings.theme) settings.theme = data.settings.theme;
+    }
+    await persist();
+    await persistSettings();
+    applyTheme();
+    render();
+    updateNotifUI();
+    toast(`تم استيراد ${kids.length} طفل ✓`);
+    backupOverlay.classList.remove('open');
+  } catch (err) {
+    toast('فشل الاستيراد — تأكد من الملف');
+  }
+  e.target.value = '';
+});
+
+document.getElementById('photoBtn').addEventListener('click', () => photoInput.click());
+photoClear.addEventListener('click', () => {
+  pendingPhoto = null;
+  photoPreview.src = '';
+  photoPreview.style.display = 'none';
+  photoClear.style.display = 'none';
+});
+photoInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = new Image();
+    img.onload = () => {
+      const size = 200;
+      const canvas = document.createElement('canvas');
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      const scale = Math.max(size / img.width, size / img.height);
+      const w = img.width * scale, h = img.height * scale;
+      ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+      pendingPhoto = canvas.toDataURL('image/jpeg', 0.82);
+      photoPreview.src = pendingPhoto;
+      photoPreview.style.display = 'block';
+      photoClear.style.display = 'inline-block';
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+});
+
+saveBtn.addEventListener('click', async () => {
+  const name = fName.value.trim();
+  const bdate = fDate.value;
+  if (!name || !bdate) {
+    saveBtn.textContent = 'أدخل الاسم والتاريخ';
+    setTimeout(() => saveBtn.textContent = editingId ? 'حفظ التعديلات' : 'حفظ', 1400);
+    return;
+  }
+  if (editingId) {
+    const idx = kids.findIndex(k => k.id === editingId);
+    if (idx !== -1) {
+      kids[idx] = { ...kids[idx], name, birthdate: bdate, photo: pendingPhoto };
+      toast('تم حفظ التعديلات ✓');
+    }
+  } else {
+    kids.push({ id: uid(), name, birthdate: bdate, photo: pendingPhoto });
+    toast(`تمت إضافة ${name} ✓`);
+  }
+  await persist();
+  closeSheet();
+  render();
+  checkCelebrations();
+});
+
+document.getElementById('celebClose').addEventListener('click', () => {
+  celebOverlay.classList.remove('open');
+});
+celebOverlay.addEventListener('click', (e) => {
+  if (e.target === celebOverlay) celebOverlay.classList.remove('open');
+});
+
+window.addEventListener('focus', () => { checkAndNotify(); checkCelebrations(); });
+setInterval(() => { checkAndNotify(); }, 60 * 60 * 1000);
+
+function launchConfetti() {
+  const canvas = document.getElementById('confettiCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const pieces = [];
+  const colors = ['#e8a93b', '#ef6f6c', '#f2c876', '#4ade80', '#60a5fa', '#c084fc', '#f472b6'];
+  for (let i = 0; i < 120; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      w: 6 + Math.random() * 8,
+      h: 4 + Math.random() * 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vx: (Math.random() - 0.5) * 4,
+      vy: 2 + Math.random() * 4,
+      rot: Math.random() * 360,
+      vr: (Math.random() - 0.5) * 10
+    });
+  }
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.vr;
+      p.vy += 0.05;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+    frame++;
+    if (frame < 180) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  draw();
+}
+
+load();
+</script>
+</body>
+</html>
